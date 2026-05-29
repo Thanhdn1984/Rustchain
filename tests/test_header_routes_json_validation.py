@@ -60,7 +60,6 @@ def test_ingest_signed_header_rejects_non_slot_producer(client, monkeypatch):
             "slot_producer": "miner-b",
             "rotation_size": 2,
         },
-        raising=False,
     )
 
     response = client.post(

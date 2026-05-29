@@ -12,6 +12,7 @@ from flask import Flask, request, jsonify, g, send_from_directory, send_file, ab
 import json
 from decimal import Decimal, ROUND_HALF_UP
 from beacon_anchor import init_beacon_table, store_envelope, compute_beacon_digest, get_recent_envelopes, normalize_beacon_pagination, VALID_KINDS
+from rip_200_round_robin_1cpu1vote import check_eligibility_round_robin
 try:
     # Deployment compatibility: production may run this file as a single script.
     from payout_preflight import validate_wallet_transfer_admin, validate_wallet_transfer_signed
@@ -4655,8 +4656,6 @@ def lottery_eligibility():
     current = current_slot()
     current_ts = int(time.time())
 
-    # Import round-robin check
-    from rip_200_round_robin_1cpu1vote import check_eligibility_round_robin
     result = check_eligibility_round_robin(DB_PATH, miner_id, current, current_ts)
     
     # Add slot for compatibility

@@ -177,7 +177,7 @@ class TestBeaconAtlasAPIBehavior(unittest.TestCase):
         contract_id = created['id']
         
         # Verify contract appears in list
-        list_response = self.client.get('/api/contracts')
+        list_response = self.client.get('/api/contracts', headers={'X-Admin-Key': 'test-admin-key'})
         self.assertEqual(list_response.status_code, 200)
         contracts = json.loads(list_response.data)
         self.assertEqual(len(contracts), 1)
@@ -199,7 +199,7 @@ class TestBeaconAtlasAPIBehavior(unittest.TestCase):
         self.assertEqual(update_response.status_code, 200)
         
         # Verify state changed
-        list_response2 = self.client.get('/api/contracts')
+        list_response2 = self.client.get('/api/contracts', headers={'X-Admin-Key': 'test-admin-key'})
         contracts2 = json.loads(list_response2.data)
         self.assertEqual(contracts2[0]['state'], 'active')
 
@@ -462,7 +462,7 @@ class TestBeaconAtlasAPIBehavior(unittest.TestCase):
         self.assertEqual(reject_response.status_code, 200)
         self.assertEqual(json.loads(reject_response.data)['state'], 'rejected')
 
-        list_response = self.client.get('/api/contracts')
+        list_response = self.client.get('/api/contracts', headers={'X-Admin-Key': 'test-admin-key'})
         contracts = json.loads(list_response.data)
         self.assertEqual(contracts[0]['state'], 'rejected')
 
@@ -515,7 +515,7 @@ class TestBeaconAtlasAPIBehavior(unittest.TestCase):
         )
         self.assertEqual(reject_response.status_code, 403)
 
-        list_response = self.client.get('/api/contracts')
+        list_response = self.client.get('/api/contracts', headers={'X-Admin-Key': 'test-admin-key'})
         contracts = json.loads(list_response.data)
         self.assertEqual(contracts[0]['state'], 'offered')
 
